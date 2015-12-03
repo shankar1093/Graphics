@@ -1,4 +1,5 @@
 var goL = (function(){
+	
 	var goL ={},bits=64*128;
 	var dt; // grid bits
 	var i;  // which dt is current?
