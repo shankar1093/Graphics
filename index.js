@@ -5,7 +5,7 @@ var app = express()
 var port = process.env.PORT || 5000
 app.use(express.static(__dirname + '/public'))
 
-// require('./app/routes')(app)
+require('./app/routes')(app)
 
 // app.get('/', function(request, response) {
 //   response.send('Test application for front end in computer graphics')
