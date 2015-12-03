@@ -1,0 +1,6 @@
+{
+  "name": "Computer Graphics Front End",
+  "description": "A barebones Node.js app using Express 4",
+  "repository": "https://github.com/shankar1093/Graphics",
+  "keywords": ["node", "express", "static"]
+}
