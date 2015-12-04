@@ -20,6 +20,7 @@
 		<script src="examples/js/controls/TrackballControls.js"></script>
 
 		<script src="examples/js/libs/stats.min.js"></script>
+    	<script src="../node_modules/leapjs/leap-0.6.4.js"></script>
 
 		<script>
 
@@ -32,6 +33,20 @@
 			offset = new THREE.Vector3(),
 			INTERSECTED, SELECTED;
 			var cur_obj = 0;
+			var controllerOptions = {enableGestures: true};
+			Leap.loop(controllerOptions,function(frame) {
+				if(frame.gestures.length>0){
+					var handgesture;
+					for(var i = 0; i < frame.gestures.length; i++) {
+						var gesture = frame.gestures[i];
+						if(gesture.type == "circle"){
+							handgesture = "circle"
+							leapCircle();
+						}
+					}
+					console.log(handgesture)
+				}
+			});
 
 			init();
 			animate();
@@ -169,6 +184,11 @@
 				randomize(objects);
 				updateGrid();
 
+			}
+
+			function leapCircle(){
+				randomize(objects);
+				updateGrid();
 			}
 
 			function updateGrid(){
