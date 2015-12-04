@@ -20,7 +20,7 @@
 		<script src="examples/js/controls/TrackballControls.js"></script>
 
 		<script src="examples/js/libs/stats.min.js"></script>
-
+    	<script src="../node_modules/leapjs/leap-0.6.4.js"></script>
 		<script>
 
 			var container, stats;
@@ -32,11 +32,63 @@
 			offset = new THREE.Vector3(),
 			INTERSECTED, SELECTED;
 			var cur_obj = 0;
+			var controllerOptions = {enableGestures: true};
+			Leap.loop(controllerOptions, function(frame) {
+			  var swipeDirection;
+			  // Display Gesture object data
+			  if (frame.gestures.length > 0) {
+			  	rcounter = 0;
+			  	lcounter = 0;
+			    
+			    for (var i = 0; i < frame.gestures.length; i++) {
+			      var gesture = frame.gestures[i];
+			      if(gesture.type == "swipe") {
+			          //Classify swipe as either horizontal or vertical
+			          var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+			          //Classify as right-left or up-down
+			          if(isHorizontal){
+			              if(gesture.direction[0] > 0){
+			              	if(swipeDirection=="right"){
+			              		rcounter++;
+			              	}	
+			                  swipeDirection = "right";
+			                  // onDocumentLeapRight();
+			              } else {
+			              	if (swipeDirection=="left"){
+			              		lcounter++;
+			              	}
+			                  swipeDirection = "left";
+			                  // onDocumentLeapLeft();
+			              }
+			          } else { //vertical
+			              if(gesture.direction[1] > 0){
+			                  swipeDirection = "up";
+			              } else {
+			                  swipeDirection = "down";
+			              }                  
+			          }
+			          
+			       }
+			     }
+			     console.log(swipeDirection)
+			     if (lcounter>5 && swipeDirection=="left"){
+			     	onDocumentLeapLeft();
+			     }
+			     else if (rcounter>5 && swipeDirection=="right"){
+			        onDocumentLeapRight();
+			     }
 
+
+			  }
+			});
 			init();
 			animate();
 
+
+
 			function init() {
+				var swipeDirection;
+
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -127,6 +179,8 @@
 				stats.domElement.style.top = '0px';
 				container.appendChild( stats.domElement );
 
+
+	
 				renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
@@ -180,6 +234,45 @@
 					for(i = 0; i < objects.length; i ++)
 					{
 						objects[i].position.x = objects[i].position.x - 42;
+						objects[i].scale.x = 1;
+						objects[i].scale.y = 1;
+						if( i == cur_obj)
+						{
+							objects[i].scale.x = 2;
+							objects[i].scale.y = 2;
+						}
+					}
+				}
+
+			}
+
+			function onDocumentLeapRight() {
+				if(cur_obj != 99)
+				{
+					cur_obj ++;
+					for(i = 0; i < objects.length; i ++)
+					{
+						objects[i].position.x = objects[i].position.x - 42;
+						objects[i].scale.x = 1;
+						objects[i].scale.y = 1;
+						if( i == cur_obj)
+						{
+							objects[i].scale.x = 2;
+							objects[i].scale.y = 2;
+						}
+					}
+				}
+
+			}
+
+
+			function onDocumentLeapLeft() {
+				if(cur_obj != 0)
+				{
+					cur_obj --;
+					for(i = 0; i < objects.length; i ++)
+					{
+						objects[i].position.x = objects[i].position.x + 42;
 						objects[i].scale.x = 1;
 						objects[i].scale.y = 1;
 						if( i == cur_obj)
