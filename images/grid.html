@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Scrollable images</title>
+		<title>Tiled images</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -42,7 +42,7 @@
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 100;
+				camera.position.z = 200;
 
 				controls = new THREE.TrackballControls( camera );
 				controls.rotateSpeed = 1.0;
@@ -74,26 +74,23 @@
 
 				var geometry = new THREE.PlaneGeometry( 32,32 );
 
-				for ( var i = 0; i < 100; i ++ ) {
-
-					var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture("cifar10_" + i + ".png")} ) );
-
-					object.position.x = 32*i + 10*i;
-					object.position.y = 0;
-					object.position.z = 0;
-					
-					if( i == cur_obj)
+				for ( var i = 0; i < 10; i ++ ) {
+					for( var j = 0; j < 10; j ++)
 					{
-						object.scale.x = 2;
-						object.scale.y = 2;
+
+						var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture("cifar10_" + (i*10 + j) + ".png")} ) );
+
+						object.position.x = 32*i + 10*i;
+						object.position.y = 32*j + 10*j - 100;
+						object.position.z = 0;
+
+						object.castShadow = true;
+						object.receiveShadow = true;
+
+						scene.add( object );
+
+						objects.push( object );
 					}
-
-					object.castShadow = true;
-					object.receiveShadow = true;
-
-					scene.add( object );
-
-					objects.push( object );
 
 				}
 
@@ -159,37 +156,6 @@
 				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-				if(mouse.x < 0 && cur_obj != 0)
-				{
-					cur_obj --;
-					for(i = 0; i < objects.length; i ++)
-					{
-						objects[i].position.x = objects[i].position.x + 42;
-						objects[i].scale.x = 1;
-						objects[i].scale.y = 1;
-						if( i == cur_obj)
-						{
-							objects[i].scale.x = 2;
-							objects[i].scale.y = 2;
-						}
-					}
-				}
-				else if(mouse.x > 0 && cur_obj != 99)
-				{
-					cur_obj ++;
-					for(i = 0; i < objects.length; i ++)
-					{
-						objects[i].position.x = objects[i].position.x - 42;
-						objects[i].scale.x = 1;
-						objects[i].scale.y = 1;
-						if( i == cur_obj)
-						{
-							objects[i].scale.x = 2;
-							objects[i].scale.y = 2;
-						}
-					}
-				}
-
 			}
 
 			function onDocumentMouseUp( event ) {
@@ -200,6 +166,39 @@
 
 				container.style.cursor = 'auto';
 
+				randomize(objects);
+				updateGrid();
+
+			}
+
+			function updateGrid(){
+				for(i = 0; i < 10; i ++)
+				{
+					for(j = 0; j < 10; j ++)
+					{
+						objects[(10*i)+j].position.x = 32*i + 10*i;
+						objects[(10*i)+j].position.y = 32*j + 10*j - 100;
+					}
+				}
+			}
+
+			function randomize(array){
+
+  				var currentIndex = array.length, temporaryValue, randomIndex ;
+
+  				// While there remain elements to shuffle...
+  				while (0 !== currentIndex) {
+
+    					// Pick a remaining element...
+    					randomIndex = Math.floor(Math.random() * currentIndex);
+   				 	currentIndex -= 1;
+
+    					// And swap it with the current element.
+    					temporaryValue = array[currentIndex];
+    					array[currentIndex] = array[randomIndex];
+    					array[randomIndex] = temporaryValue;
+  				}
+  				return array;
 			}
 
 			//
