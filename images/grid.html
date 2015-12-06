@@ -4,6 +4,9 @@
 		<title>Tiled images</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 		<style>
 			body {
 				font-family: Monospace;
@@ -239,7 +242,9 @@
 			}
 
 			function render() {
-
+				if (camera.position.z<40){
+					window.location.href="scroll.html";
+				}
 				controls.update();
 
 				renderer.render( scene, camera );
