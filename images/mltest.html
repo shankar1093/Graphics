@@ -39,6 +39,7 @@
 			Leap.loop(controllerOptions,function(frame) {
 				if(frame.gestures.length>0){
 					var handgesture;
+					ucounter = 0;
 					for(var i = 0; i < frame.gestures.length; i++) {
 						var gesture = frame.gestures[i];
 						if(gesture.type == "circle"){
@@ -46,9 +47,26 @@
 							counter++;
 							// leapCircle();
 						}
+						if(gesture.type == "swipe") {
+						  //Classify swipe as either horizontal or vertical
+						  var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+						  //Classify as right-left or up-down
+						  if(isHorizontal){
+						      //do nothing
+						  } else { //vertical
+						      handgesture = "up"
+						      ucounter ++;               
+						  }
+						  
+					       }
 					}
 					console.log(counter)
-					if(counter%20==0){
+					if(counter%10==0 && handgesture == "circle"){
+						//MLsplit();
+						leapCircle();
+					}
+					if(ucounter > 5 && handgesture == "up")
+					{
 						MLsplit();
 					}
 				}
@@ -95,14 +113,14 @@
 
 				var geometry = new THREE.PlaneGeometry( 32,32 );
 
-				for ( var i = 0; i < 10; i ++ ) {
-					for( var j = 0; j < 10; j ++)
+				for ( var i = 0; i < 20; i ++ ) {
+					for( var j = 0; j < 5; j ++)
 					{
 
-						var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture("cifar10_" + (i*10 + j) + ".png")} ) );
+						var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture("cifar10_" + (i*5 + j) + ".png")} ) );
 
-						object.position.x = 32*i + 10*i;
-						object.position.y = 32*j + 10*j - 100;
+						object.position.x = 32*i + 5*i - 250;
+						object.position.y = 32*j + 20*j - 100;
 						object.position.z = 0;
 
 						object.castShadow = true;
@@ -122,7 +140,7 @@
 				scene.add( plane );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setClearColor( 0xf0f0f0 );
+				renderer.setClearColor( 0x000000 );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.sortObjects = false;
@@ -198,12 +216,12 @@
 			}
 
 			function updateGrid(){
-				for(i = 0; i < 10; i ++)
+				for(i = 0; i < 20; i ++)
 				{
-					for(j = 0; j < 10; j ++)
+					for(j = 0; j < 5; j ++)
 					{
-						objects[(10*i)+j].position.x = 32*i + 10*i;
-						objects[(10*i)+j].position.y = 32*j + 10*j - 100;
+						objects[(5*i)+j].position.x = 32*i + 5*i - 250;
+						objects[(5*i)+j].position.y = 32*j + 20*j - 100;
 					}
 				}
 			}
