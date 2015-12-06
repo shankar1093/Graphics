@@ -139,6 +139,14 @@
 						object.scale.x = 2;
 						object.scale.y = 2;
 					}
+					else if( i < cur_obj)
+					{
+						object.position.x = object.position.x - 20;
+					}
+					else
+					{
+						object.position.x = object.position.x + 20;
+					}
 
 					object.castShadow = true;
 					object.receiveShadow = true;
@@ -156,7 +164,7 @@
 				scene.add( plane );
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setClearColor( 0xf0f0f0 );
+				renderer.setClearColor( 0x000000 );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.sortObjects = false;
@@ -213,18 +221,27 @@
 				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
+				//going left thru images
 				if(mouse.x < 0 && cur_obj != 0)
 				{
 					cur_obj --;
 					for(i = 0; i < objects.length; i ++)
 					{
-						objects[i].position.x = objects[i].position.x + 42;
+						objects[i].position.x = 32*i + 10*i - 42*cur_obj;
 						objects[i].scale.x = 1;
 						objects[i].scale.y = 1;
 						if( i == cur_obj)
 						{
 							objects[i].scale.x = 2;
 							objects[i].scale.y = 2;
+						}
+						else if( i < cur_obj )
+						{
+							objects[i].position.x = objects[i].position.x - 20;
+						}
+						else
+						{
+							objects[i].position.x = objects[i].position.x + 20;
 						}
 					}
 				}
@@ -233,13 +250,21 @@
 					cur_obj ++;
 					for(i = 0; i < objects.length; i ++)
 					{
-						objects[i].position.x = objects[i].position.x - 42;
+						objects[i].position.x = 32*i + 10*i - 42*cur_obj;
 						objects[i].scale.x = 1;
 						objects[i].scale.y = 1;
 						if( i == cur_obj)
 						{
 							objects[i].scale.x = 2;
 							objects[i].scale.y = 2;
+						}
+						else if( i < cur_obj)
+						{
+							objects[i].position.x = objects[i].position.x - 20;
+						}
+						else
+						{
+							objects[i].position.x = objects[i].position.x + 20;
 						}
 					}
 				}
@@ -252,13 +277,21 @@
 					cur_obj ++;
 					for(i = 0; i < objects.length; i ++)
 					{
-						objects[i].position.x = objects[i].position.x - 42;
+						objects[i].position.x = 32*i + 10*i - 42*cur_obj;
 						objects[i].scale.x = 1;
 						objects[i].scale.y = 1;
 						if( i == cur_obj)
 						{
 							objects[i].scale.x = 2;
 							objects[i].scale.y = 2;
+						}
+						else if( i < cur_obj)
+						{
+							objects[i].position.x = objects[i].position.x - 20;
+						}
+						else
+						{
+							objects[i].position.x = objects[i].position.x + 20;
 						}
 					}
 				}
@@ -272,13 +305,21 @@
 					cur_obj --;
 					for(i = 0; i < objects.length; i ++)
 					{
-						objects[i].position.x = objects[i].position.x + 42;
+						objects[i].position.x = 32*i + 10*i - 42*cur_obj;
 						objects[i].scale.x = 1;
 						objects[i].scale.y = 1;
 						if( i == cur_obj)
 						{
 							objects[i].scale.x = 2;
 							objects[i].scale.y = 2;
+						}
+						else if( i < cur_obj )
+						{
+							objects[i].position.x = objects[i].position.x - 20;
+						}
+						else
+						{
+							objects[i].position.x = objects[i].position.x + 20;
 						}
 					}
 				}
